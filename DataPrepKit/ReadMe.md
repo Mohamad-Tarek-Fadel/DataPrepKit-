@@ -1,112 +1,108 @@
 # DataPrepKit
 
 ## Overview
-DataPrepKit is a comprehensive Python toolkit for preprocessing datasets efficiently. It provides utilities for:
-- Reading data from various file formats (CSV, Excel, JSON).
-- Summarizing datasets with key metrics.
-- Handling missing values using customizable strategies.
-- Encoding categorical data into numerical formats.
-- Visualizing numerical data distributions using Matplotlib.
+DataPrepKit is a Python project designed to simplify data preprocessing and analysis tasks. It includes features for reading data, summarizing key statistics, handling missing values, encoding categorical data, and visualizing numerical data distributions through a user-friendly web interface built with Flask.
 
 ## Features
-1. **Data Reading**:
-   - Supports file formats: CSV, Excel (.xls, .xlsx), and JSON.
-   - Automatically detects the file type based on the file extension.
+- **Data Reading**: Supports CSV, Excel, and JSON formats.
+- **Data Summarization**: Provides key metrics like mean, median, mode, and null counts.
+- **Handling Missing Values**: Offers flexible strategies for filling or dropping missing data.
+- **Encoding Categorical Data**: Supports one-hot and label encoding for categorical columns.
+- **Visualization**: Creates histograms to visualize numerical data distributions.
+- **Web Interface**: Enables file selection and data summary visualization directly through a web browser.
 
-2. **Data Summarization**:
-   - Computes key metrics such as mean, mode, median, and null value counts.
-
-3. **Handling Missing Values**:
-   - Options to fill missing values with mean, median, or mode.
-   - Ability to drop rows with missing values.
-
-4. **Categorical Data Encoding**:
-   - Supports one-hot encoding and label encoding.
-
-5. **Data Visualization**:
-   - Visualizes the distribution of numerical data using histograms.
-
-## Installation
-### Prerequisites
+## Setup
+### Requirements
 - Python 3.7+
-- Required libraries:
-  ```bash
-  pip install pandas numpy matplotlib
-  ```
+- Libraries: Pandas, NumPy, Matplotlib, Flask
 
-## Usage
-### Example Workflow
-1. **Reading Data**:
-   ```python
-   toolkit = DataPrepKit()
-   data_people = toolkit.read_data("D:\\Alcamp\\DataPrepKit\\people.csv")
-   ```
+Install the required libraries using:
+```bash
+pip install pandas numpy matplotlib flask
+```
 
-2. **Summarizing Data**:
-   ```python
-   toolkit.summarize_data(data_people)
-   ```
+## How It Works
+### 1. Reading Data
+You can load data from various file formats through the web interface or programmatically:
+```python
+from DataPrepKit import DataPrepKit
 
-3. **Handling Missing Values**:
-   ```python
-   data_people = toolkit.handle_missing_values(data_people, strategy='mean')
-   ```
+data = DataPrepKit.read_data("D:\\Alcamp\\DataPrepKit\\people.csv")
+```
 
-4. **Encoding Categorical Data**:
-   ```python
-   data_people = toolkit.encode_categorical_data(data_people, column='Gender', encoding_type='one_hot')
-   ```
+### 2. Summarizing Data
+Get a quick statistical summary:
+```python
+DataPrepKit.summarize_data(data)
+```
 
-5. **Visualizing Data**:
-   ```python
-   toolkit.plot_numeric_distribution(data_people, column='Age')
-   ```
+### 3. Handling Missing Values
+Choose how to handle missing data:
+```python
+data = DataPrepKit.handle_missing_values(data, strategy='mean')
+```
 
-## Project Structure
+### 4. Encoding Categorical Data
+Easily encode categorical columns:
+```python
+data = DataPrepKit.encode_categorical_data(data, column='Gender', encoding_type='one_hot')
+```
+
+### 5. Visualizing Data
+Create histograms for numerical columns:
+```python
+DataPrepKit.plot_numeric_distribution(data, column='Age')
+```
+
+### 6. Web Interface
+Launch the Flask application to interact with the data through a web browser:
+```bash
+python app.py
+```
+Visit `http://127.0.0.1:5000` to:
+- Select a data file.
+- View a detailed summary, including statistical insights and data preview.
+- Handle errors in file selection or processing.
+
+## Folder Structure
 ```
 D:\Alcamp\DataPrepKit\
-├── DataPrepKit.py        # Main Python script for the toolkit
-├── people.csv            # Example dataset: People data
-├── sales.csv             # Example dataset: Sales data
-├── weather.csv           # Example dataset: Weather data
-└── README.md             # Project documentation
+├── app.py               # Flask application for the web interface
+├── Data.py              # Script to generate sample data files
+├── DataPrepKit.py       # Main Python library for data preprocessing
+├── people.csv           # Example dataset (People data)
+├── sales.csv            # Example dataset (Sales data)
+├── weather.csv          # Example dataset (Weather data)
+├── templates            # HTML templates for the web interface
+│   ├── index.html       # File selection interface
+│   ├── data_summary.html# Data summary display
+│   └── error.html       # Error handling display
+└── README.md            # Project documentation (this file)
 ```
 
-## Functions
+## Flask Application
+The Flask app provides a simple and intuitive web interface for interacting with datasets. It includes:
+- **`/` Route**: Lists available data files and allows users to select one.
+- **`/load_data` Route**: Processes the selected file and displays a comprehensive summary.
+
+## Functions Explained
 ### `read_data(file_path: str)`
-Reads data from a file and returns a Pandas DataFrame.
-- **Args**: `file_path` (str): Path to the file.
-- **Returns**: Pandas DataFrame.
+Reads data from a specified file path and returns a DataFrame.
 
 ### `summarize_data(data: pd.DataFrame)`
 Prints and returns statistical summaries of the dataset.
-- **Args**: `data` (Pandas DataFrame).
-- **Returns**: Dictionary of summaries.
 
-### `handle_missing_values(data: pd.DataFrame, strategy: str = 'mean', column: str = None)`
-Handles missing values in the dataset.
-- **Args**:
-  - `data`: Dataset to process.
-  - `strategy`: Strategy for handling missing values ('mean', 'median', 'mode', 'drop').
-  - `column`: Specific column to apply the strategy on (optional).
-- **Returns**: Processed DataFrame.
+### `handle_missing_values(data: pd.DataFrame, strategy: str, column: str = None)`
+Handles missing values based on the chosen strategy (mean, median, mode, or drop).
 
-### `encode_categorical_data(data: pd.DataFrame, column: str, encoding_type: str = 'one_hot')`
-Encodes categorical data into numerical formats.
-- **Args**:
-  - `data`: Dataset to process.
-  - `column`: Column to encode.
-  - `encoding_type`: Encoding type ('one_hot', 'label').
-- **Returns**: Processed DataFrame.
+### `encode_categorical_data(data: pd.DataFrame, column: str, encoding_type: str)`
+Encodes categorical data using one-hot or label encoding.
 
 ### `plot_numeric_distribution(data: pd.DataFrame, column: str)`
-Plots the distribution of numerical data in a given column.
-- **Args**:
-  - `data`: Dataset to process.
-  - `column`: Numerical column to visualize.
+Plots the distribution of numerical data for the specified column.
 
 ## Example Output
-### Processed People Data:
+### Sample Processed Data
 ```
    ID     Name  Age Country  Salary  Gender_Female  Gender_Male
 0   1  Ahmed_1   45   Egypt    3875           True        False
@@ -116,9 +112,14 @@ Plots the distribution of numerical data in a given column.
 4   5  Ahmed_5   41   Egypt    4716          False         True
 ```
 
-### Visualization Example:
-![Age Distribution](#)
+### Sample Visualization
+The toolkit also generates visualizations like this for numerical columns:
+```
+Histogram: Distribution of Age
+```
 
-## License
-This project is licensed under the MIT License.
+## Conclusion
+This project combines data preprocessing capabilities with a web-based interface to simplify interaction with datasets. It’s a versatile tool suitable for analysts, researchers, and developers who work with structured data.
+
+For feedback or suggestions, feel free to reach out!
 
